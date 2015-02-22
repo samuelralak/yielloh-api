@@ -15,3 +15,7 @@ gem 'devise'
 gem 'doorkeeper'
 
 gem 'api_taster'
+
+group :production do
+  gem 'rails_12factor'
+end

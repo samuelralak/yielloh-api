@@ -23,7 +23,7 @@ ApiTaster.routes do
 
     delete '/users/sign_out', {
         :format => :json,
-        :access_token => ""
+        :user => ""
     }
 
     desc 'Cancel user registration'
