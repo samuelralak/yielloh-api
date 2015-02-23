@@ -16,10 +16,9 @@ ApiTaster.routes do
 
     desc 'USER SIGN OUT'
 
-    delete '/user_sessions/:id', {
+    delete '/user_sessions', {
         :format => :json,
-        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
-        :id => "4e4671e9-6829-4d98-ae40-f269ecde7762"
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f"
     }
 
     desc 'NEW USER REGISTRATION'
