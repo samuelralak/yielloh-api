@@ -1,9 +1,9 @@
 ApiTaster.global_headers = {
-  'Authorization' => 'Bearer 86a60aa74e3966479527cddf75eafbc279593a2ccabe05ddbf9b31fb94bee754'
+  
 }
 
 ApiTaster.routes do
-    desc 'New user session'
+    desc 'USER SIGN IN'
 
     post '/oauth/token', {
         :format => :json,
@@ -14,25 +14,15 @@ ApiTaster.routes do
         :password => "passwordexample"
     }
 
-    post '/oauth/revoke', {
+    desc 'USER SIGN OUT'
+
+    delete '/user_sessions/:id', {
         :format => :json,
-        :token => ""
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :id => "4e4671e9-6829-4d98-ae40-f269ecde7762"
     }
 
-    desc 'Destroy user session'
-
-    delete '/users/sign_out', {
-        :format => :json,
-        :user => ""
-    }
-
-    desc 'Cancel user registration'
-
-    delete '/users', {
-
-    }
-
-    desc 'New user registration'
+    desc 'NEW USER REGISTRATION'
 
     post '/users', { 
         :format => :json,
@@ -43,48 +33,5 @@ ApiTaster.routes do
         }
     }
 
-    desc 'Edit user registration'
-
-    put '/users', {
-
-    }
-
-    desc 'Create user password'
-
-    post '/users/password', {
-
-    }
-
-    desc 'Edit user password'
-
-    put '/users/password', {
-
-    }
-
-
     
 end
-=begin
-  
-    get '/users'
-
-    post '/users', {
-      :user => {
-        :name => 'Fred'
-      }
-    }
-
-    get '/users/:id', {
-      :id => 1
-    }
-
-    put '/users/:id', {
-      :id => 1, :user => {
-        :name => 'Awesome'
-      }
-    }
-
-    delete '/users/:id', {
-      :id => 1
-    }
-=end

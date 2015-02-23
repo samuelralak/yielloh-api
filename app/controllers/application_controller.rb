@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+	before_filter :verify_subdomain
+
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
 	include ActionController::MimeResponds
 	include ActionController::ImplicitRender
@@ -12,4 +14,12 @@ class ApplicationController < ActionController::API
 	end
 
 	helper_method :current_user
+
+	private
+		def verify_subdomain
+			unless request.subdomain.start_with?('api') || request.subdomain.start_with?('staging')
+				puts "######## SUBDOMAIN: #{request.subdomain}"	
+				raise ActionController::RoutingError, "Route not found"
+			end
+		end
 end
