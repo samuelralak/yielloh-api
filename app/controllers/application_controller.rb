@@ -22,4 +22,8 @@ class ApplicationController < ActionController::API
 				raise ActionController::RoutingError, "Route not found"
 			end
 		end
+
+		def require_profile
+			
+		end
 end

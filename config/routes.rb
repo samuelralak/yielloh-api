@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
     	delete 'user_sessions', to: 'user_sessions#destroy', as: 'logout_user'
+      resources :profiles, except: [:new, :edit]
     end
   end
 end
