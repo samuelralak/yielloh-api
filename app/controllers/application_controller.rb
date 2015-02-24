@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
 	include ActionController::Rescue
 	include ActionView::Layouts
 
-	respond_to :html, :json, :xml
+	respond_to :json
 
 	def current_user
 		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token	
@@ -24,6 +24,8 @@ class ApplicationController < ActionController::API
 		end
 
 		def require_profile
-			
+			if current_user && current_user.profile.nil?
+				render json: { message: "No profile found" }, status: :forbidden
+			end
 		end
 end

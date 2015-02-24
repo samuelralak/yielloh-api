@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :doorkeeper_authorize!, except: [:show]
+  before_action :set_profile, only: [:show, :edit, :update]
 
   def index
     @profiles = Profile.all
@@ -11,18 +12,13 @@ class ProfilesController < ApplicationController
   end
 
   def create
-    @profile = Profile.new(profile_params)
+    @profile = current_user.build_profile(profile_params)
     @profile.save
     respond_with(@profile)
   end
 
   def update
     @profile.update(profile_params)
-    respond_with(@profile)
-  end
-
-  def destroy
-    @profile.destroy
     respond_with(@profile)
   end
 
