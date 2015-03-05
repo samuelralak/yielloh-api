@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
 	before_filter :verify_subdomain
+	before_filter :require_profile
 
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
 	include ActionController::MimeResponds
@@ -7,7 +8,7 @@ class ApplicationController < ActionController::API
 	include ActionController::Rescue
 	include ActionView::Layouts
 
-	respond_to :json
+	respond_to :json, :html, :xml
 
 	def current_user
 		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token	

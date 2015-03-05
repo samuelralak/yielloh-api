@@ -1,11 +1,7 @@
 class ProfilesController < ApplicationController
+  skip_before_filter :require_profile, only: [:create]
   before_action :doorkeeper_authorize!, except: [:show]
   before_action :set_profile, only: [:show, :edit, :update]
-
-  def index
-    @profiles = Profile.all
-    respond_with(@profiles)
-  end
 
   def show
     respond_with(@profile)
