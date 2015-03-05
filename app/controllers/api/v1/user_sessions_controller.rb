@@ -3,7 +3,7 @@ class Api::V1::UserSessionsController < ApplicationController
 
 	def destroy
 		Doorkeeper::AccessToken.revoke_all_for(doorkeeper_token.application_id, current_user)
-		env['warden'].logout
+		sign_out current_user
 		render json: "OK", status: 200
 	end
 end
