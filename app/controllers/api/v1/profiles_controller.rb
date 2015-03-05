@@ -1,21 +1,36 @@
-class ProfilesController < ApplicationController
-  skip_before_filter :require_profile, only: [:create]
-  before_action :doorkeeper_authorize!, except: [:show]
-  before_action :set_profile, only: [:show, :edit, :update]
+class Api::V1::ProfilesController < ApplicationController
+  before_action      :doorkeeper_authorize!, except: [:show]
+  skip_before_action :require_profile,       only:   [:create, :show]
+  before_action      :set_profile,           only:   [:show, :update]
 
   def show
-    respond_with(@profile)
+   respond_to do |format|
+      format.json { render json: @profile, root: false, status: :ok}
+    end
   end
 
   def create
     @profile = current_user.build_profile(profile_params)
-    @profile.save
-    respond_with(@profile)
+
+    if @profile.save
+      respond_to do |format|
+        format.json { render json: @profile, root: false, status: :created, location: @api_profile}
+      end
+    else
+      respond_to do |format|
+        format.json { render json: @profile.errors, status: :unprocessable_entity}
+      end
+    end
   end
 
   def update
-    @profile.update(profile_params)
-    respond_with(@profile)
+    respond_to do |format|
+      if @profile.update(profile_params)
+        format.json { render json: @profile, root: false, status: :ok, location: @api_profile }
+      else
+        format.json { render json: @profile.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

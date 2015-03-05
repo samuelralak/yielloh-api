@@ -43,5 +43,43 @@ ApiTaster.routes do
         }
     }
 
+    desc 'USER PROFILE'
+
+    post '/profiles', {
+        :format => :json,
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :fullname => '',
+            :username => '',
+            :about => '',
+            :location => '',
+            :user_id => '4023de7b-cc16-4455-a40f-21814afeda47'
+        }
+    }
+
+    get '/profiles/:id', {
+        :format => :json,
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :id => ""
+    }
+
+    patch '/profiles/:id', {
+        :format => :json,
+        :id => "",
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :fullname => '',
+        }
+    }
+
+    put '/profiles/:id', {
+        :format => :json,
+        :id => "",
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :username => '',
+        }
+    }
+
     
 end
