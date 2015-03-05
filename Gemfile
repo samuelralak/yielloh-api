@@ -16,6 +16,8 @@ gem 'doorkeeper'
 
 gem 'api_taster'
 
+gem 'active_model_serializers', '~> 0.9.3'
+
 group :production do
   gem 'rails_12factor'
 end
