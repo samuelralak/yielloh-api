@@ -11,8 +11,8 @@ gem 'spring', :group => :development
 gem 'pg'
 
 gem 'devise'
-
 gem 'doorkeeper'
+gem 'rolify'
 
 gem 'api_taster'
 
