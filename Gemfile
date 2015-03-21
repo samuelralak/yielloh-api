@@ -13,6 +13,7 @@ gem 'pg'
 gem 'devise'
 gem 'doorkeeper'
 gem 'rolify'
+gem 'paperclip', '~> 4.2.1'
 
 gem 'api_taster'
 
