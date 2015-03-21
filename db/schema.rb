@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309183021) do
+ActiveRecord::Schema.define(version: 20150310075904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,18 @@ ActiveRecord::Schema.define(version: 20150309183021) do
   add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
+  create_table "oauth_admin_logins", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "user_id"
+    t.string   "access_token"
+    t.boolean  "is_logged_in", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_admin_logins", ["access_token"], name: "index_oauth_admin_logins_on_access_token", unique: true, using: :btree
+  add_index "oauth_admin_logins", ["user_id", "access_token"], name: "index_oauth_admin_logins_on_user_id_and_access_token", using: :btree
+  add_index "oauth_admin_logins", ["user_id"], name: "index_oauth_admin_logins_on_user_id", using: :btree
+
   create_table "oauth_applications", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name",                      null: false
     t.string   "uid",                       null: false
@@ -102,9 +114,9 @@ ActiveRecord::Schema.define(version: 20150309183021) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
-  create_table "roles", force: true do |t|
+  create_table "roles", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "name"
-    t.integer  "resource_id"
+    t.uuid     "resource_id"
     t.string   "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -130,8 +142,8 @@ ActiveRecord::Schema.define(version: 20150309183021) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "users_roles", id: false, force: true do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.uuid "user_id"
+    t.uuid "role_id"
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree

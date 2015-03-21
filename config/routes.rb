@@ -2,10 +2,11 @@ require 'api_constraints'
 require 'subdomain'
 
 Rails.application.routes.draw do
+  use_doorkeeper
+  post 'login_oauth', to: 'landing#login', as: 'login_oauth'
+  root 'landing#index'
 
   mount ApiTaster::Engine => "/api_taster" # if Rails.env.development?
-  
-  use_doorkeeper
   devise_for :users
   # API definition
   namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
