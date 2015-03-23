@@ -15,6 +15,11 @@ gem 'doorkeeper'
 gem 'rolify'
 gem 'paperclip', '~> 4.2.1'
 
+# amazon web services
+gem 'delayed_paperclip'
+gem 'aws-s3'
+gem 'aws-sdk'
+
 gem 'api_taster'
 
 gem 'active_model_serializers', '~> 0.9.3'
