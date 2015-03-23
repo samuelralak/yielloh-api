@@ -6,32 +6,15 @@ class ApplicationController < ActionController::API
 	include ActionController::MimeResponds
 	include ActionController::ImplicitRender
 	include ActionController::Rescue
-	include ActionController::Cookies
-	include ActionController::Flash
-	include ActionView::Layouts
-	include ActionView::Helpers
+	rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-	respond_to :json, :html, :xml
+	respond_to :json
 
 	def current_user
-		if doorkeeper_token
-			current_resource_owner
-		else
-			# fallback to auth with warden if no doorkeeper token
-			if session[:user]
-				User.find(session[:user])
-			else
-				warden.authenticate(:scope => :user)
-			end
-		end
-	end
-
-	# Needed for doorkeeper find the user that owns the access token
-	def current_resource_owner
-		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
-	end    
-
-	helper_method :current_user
+ 		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token	
+ 	end
+ 
+ 	helper_method :current_user
 
 	private
 		def verify_subdomain
@@ -47,11 +30,7 @@ class ApplicationController < ActionController::API
 			end
 		end
 
-		def after_sign_in_path_for(resource_or_scope)
-			if resource_or_scope.is_a?(User) && resource_or_scope.has_role?(:super_admin)
-				oauth_applications_path
-			else
-				super
-			end
+		def record_not_found
+			render json: "{\"error\" : \"record_not_found\"}", status: :not_found
 		end
 end
