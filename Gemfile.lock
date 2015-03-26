@@ -29,6 +29,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    acts_as_commentable (4.0.2)
     api_taster (0.8.4)
       jquery-rails
       rails (~> 4.1.0)
@@ -162,6 +163,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.9.3)
+  acts_as_commentable (~> 4.0.2)
   api_taster
   aws-s3
   aws-sdk

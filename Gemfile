@@ -14,6 +14,7 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'rolify'
 gem 'paperclip', '~> 4.2.1'
+gem 'acts_as_commentable', '~> 4.0.2'
 
 # amazon web services
 gem 'delayed_paperclip'
