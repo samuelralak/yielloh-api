@@ -24,7 +24,7 @@ class Api::V1::PostsController < ApplicationController
 
 		respond_to do |format|
 			if @post.save
-				format.json { render json: @post, root: false, status: :created, location: @api_post}
+				format.json { render json: @post, root: false, status: :created }
 			else
 				
 			end

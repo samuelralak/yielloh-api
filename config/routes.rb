@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     	delete 'user_sessions', to: 'user_sessions#destroy', as: 'logout_user'
 
       resources :profiles, only: [:show, :create, :update]
+      resources :photos, except: [:new, :edit]
 
       resources :articles do
         resources :posts
