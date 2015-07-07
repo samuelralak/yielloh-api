@@ -1,5 +1,10 @@
+require "application_responder"
+
 class ErrorsController < ActionController::API
-	include ActionController::MimeResponds
+	elf.responder = ApplicationResponder
+	respond_to :html, :xml, :json
+
+	# include ActionController::MimeResponds
 	include ActionController::ImplicitRender
 	rescue_from ActionController::RoutingError, with: :url_not_identified
 
