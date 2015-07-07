@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422175750) do
+ActiveRecord::Schema.define(version: 20150707085202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,13 +105,17 @@ ActiveRecord::Schema.define(version: 20150422175750) do
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "profiles", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "fullname",   limit: 255
-    t.string   "username",   limit: 255
-    t.string   "about",      limit: 255
-    t.string   "location",   limit: 255
+    t.string   "fullname",            limit: 255
+    t.string   "username",            limit: 255
+    t.string   "about",               limit: 255
+    t.string   "location",            limit: 255
     t.uuid     "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
