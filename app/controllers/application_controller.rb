@@ -1,4 +1,9 @@
+require "application_responder"
+
 class ApplicationController < ActionController::API
+  	self.responder = ApplicationResponder
+  	respond_to :html, :xml, :json
+
 	before_filter :verify_subdomain
 	before_filter :require_profile
 	include ActionController::Serialization
@@ -11,15 +16,15 @@ class ApplicationController < ActionController::API
 	respond_to :json
 
 	def current_user
- 		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token	
+ 		User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
  	end
- 
+
  	helper_method :current_user
 
 	private
 		def verify_subdomain
 			unless request.subdomain.start_with?('api') || request.subdomain.start_with?('staging')
-				puts "######## SUBDOMAIN: #{request.subdomain}"	
+				puts "######## SUBDOMAIN: #{request.subdomain}"
 				raise ActionController::RoutingError, "Route not found"
 			end
 		end

@@ -8,11 +8,15 @@ gem 'rails-api'
 
 gem 'spring', :group => :development
 
+# database
 gem 'pg'
 
+# authentication
 gem 'devise'
 gem 'doorkeeper'
 gem 'rolify'
+
+# uploads
 gem 'paperclip'
 gem 'acts_as_commentable'
 
@@ -21,9 +25,18 @@ gem 'delayed_paperclip'
 gem 'aws-s3'
 gem 'aws-sdk', '< 2.0'
 
+# reponders
 gem 'active_model_serializers'
+gem 'responders', '~> 2.1.0'
 
+# voting
 gem 'activerecord-reputation-system'
+
+# CORS
+gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-attack'
+
+gem "letter_opener", :group => :development
 
 group :production do
   gem 'rails_12factor'
