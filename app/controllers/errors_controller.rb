@@ -1,7 +1,7 @@
 require "application_responder"
 
 class ErrorsController < ActionController::API
-	elf.responder = ApplicationResponder
+	self.responder = ApplicationResponder
 	respond_to :html, :xml, :json
 
 	# include ActionController::MimeResponds
