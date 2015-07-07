@@ -13,6 +13,16 @@ class ApplicationController < ActionController::API
 	include ActionController::Rescue
 	rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+	def default_serializer_options
+		{ root: false }
+	end
+
+	# this is to customise the OAuth invalid token response we get
+	# https://github.com/applicake/doorkeeper/wiki/Customizing-the-response-body-when-unauthorized
+	def doorkeeper_unauthorized_render_options
+		{ json: { error: "invalid_token"} }
+	end
+
 	respond_to :json
 
 	def current_user
