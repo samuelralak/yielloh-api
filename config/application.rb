@@ -22,6 +22,29 @@ module YiellohApi
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # Do not swallow errors in after_commit/after_rollback callbacks.
+    config.active_record.raise_in_transactional_callbacks = true
+
+    # this is the config that enables us to accept CORS requests from the Lukaduka API clients
+    # https://github.com/cyu/rack-cors
+    # config.middleware.use Rack::Cors do
+    # https://github.com/cyu/rack-cors/issues/61
+    # config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+    config.middleware.insert_before "Rack::Runtime", "Rack::Cors", logger: Rails.logger do
+      allow do
+        # origins '*'
+        origins 'http://0.0.0.0:3000', 'http://192.168.0.16:9000', 'http://192.168.0.17', 'http://localhost:3000', 'http://127.0.0.1',
+                'http://0:0:0:0:0:0:0:1', 'https://api.yielloh.com', 'https://www.yielloh.com', 'https://staging.yielloh.com',
+                'http://api.lvh.me:3000'
+        resource '*', :headers => :any, :methods => [:get, :post, :patch, :put, :delete, :options, :head]
+      end
+    end
+
+    # using Rack::Attack allows us to whitelist, blacklist and throttle access to our API
+    # https://github.com/kickstarter/rack-attack
+    config.middleware.use Rack::Attack
+
     config.middleware.use ActionDispatch::Flash
     config.action_controller.allow_forgery_protection = false
   end
