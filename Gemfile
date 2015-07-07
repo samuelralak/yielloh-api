@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.1.4'
 
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.0'
 
 gem 'rails-api'
 
@@ -13,25 +13,18 @@ gem 'pg'
 gem 'devise'
 gem 'doorkeeper'
 gem 'rolify'
-gem 'paperclip', '~> 4.2.1'
-gem 'acts_as_commentable', '~> 4.0.2'
+gem 'paperclip'
+gem 'acts_as_commentable'
 
 # amazon web services
 gem 'delayed_paperclip'
 gem 'aws-s3'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2.0'
 
-gem 'api_taster'
+gem 'active_model_serializers'
 
-gem 'active_model_serializers', '~> 0.9.3'
+gem 'activerecord-reputation-system'
 
 group :production do
   gem 'rails_12factor'
-end
-
-group :assets do
-  gem 'therubyracer'
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
 end

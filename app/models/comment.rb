@@ -12,4 +12,6 @@ class Comment < ActiveRecord::Base
 
   # NOTE: Comments belong to a user
   belongs_to :user
+
+  has_reputation :votes, source: :user, aggregated_by: :sum
 end
