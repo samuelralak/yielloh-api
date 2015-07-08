@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707093134) do
+ActiveRecord::Schema.define(version: 20150708152457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,20 @@ ActiveRecord::Schema.define(version: 20150707093134) do
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
+  create_table "pages", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
+    t.uuid     "user_id"
+  end
+
+  add_index "pages", ["user_id"], name: "index_pages_on_user_id", using: :btree
+
   create_table "photos", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.text     "caption"
     t.datetime "created_at"
@@ -99,8 +113,10 @@ ActiveRecord::Schema.define(version: 20150707093134) do
     t.uuid     "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.uuid     "page_id"
   end
 
+  add_index "posts", ["page_id"], name: "index_posts_on_page_id", using: :btree
   add_index "posts", ["postable_id", "postable_type"], name: "index_posts_on_postable_id_and_postable_type", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 

@@ -2,30 +2,31 @@ require 'api_constraints'
 require 'subdomain'
 
 Rails.application.routes.draw do
-  use_doorkeeper
-  devise_for :users
+      use_doorkeeper
+      devise_for :users
 
-  # API definition
-  namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
-    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
-    	post 'user_sessions', to: 'user_sessions#logout_user', as: 'logout_user'
+      # API definition
+      namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
+          scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
+              post 'user_sessions', to: 'user_sessions#logout_user', as: 'logout_user'
 
-      resources :profiles, only: [:show, :create, :update]
-      resources :photos, except: [:new, :edit]
+              get 'all_posts', to: 'posts#all', as: 'all_posts'
 
-      resources :articles do
-        resources :posts
+              resources :profiles, only: [:show, :create, :update]
+              resources :comments, only: [:create, :update, :destroy]
+
+              resources :photos,   except: [:new, :edit]
+              resources :pages,    except: [:new, :edit]
+
+              resources :articles do
+                  resources :posts
+              end
+
+              resources :quotes do
+                  resources :posts
+              end
+          end
       end
 
-      resources :quotes do
-        resources :posts
-      end
-
-      resources :comments, only: [:create, :update, :destroy]
-
-      get 'all_posts', to: 'posts#all', as: 'all_posts'
-    end
-  end
-
-  match '*path', :to => 'errors#url_not_identified', via: [:head, :get, :post, :patch, :put, :delete, :options]
+      match '*path', :to => 'errors#url_not_identified', via: [:head, :get, :post, :patch, :put, :delete, :options]
 end
