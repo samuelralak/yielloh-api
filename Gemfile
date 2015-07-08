@@ -36,6 +36,9 @@ gem 'activerecord-reputation-system'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'rack-attack'
 
+# taggings
+gem 'acts-as-taggable-on', '~> 3.4'
+
 gem "letter_opener", :group => :development
 
 group :production do

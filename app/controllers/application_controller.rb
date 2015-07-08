@@ -8,7 +8,6 @@ class ApplicationController < ActionController::API
 	before_filter :require_profile
 	include ActionController::Serialization
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
-	# include ActionController::MimeResponds
 	include ActionController::ImplicitRender
 	include ActionController::Rescue
 	rescue_from ActiveRecord::RecordNotFound, with: :record_not_found

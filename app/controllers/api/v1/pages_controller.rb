@@ -12,19 +12,26 @@ class Api::V1::PagesController < ApplicationController
     end
 
     def create
-        @page = Page.new(page_params)
-        @page.save
-        respond_with(@page)
+        @page = current_user.pages.new(page_params)
+
+        if @page.save
+            render json: @page, status: :created, location: @api_page
+        else
+            render json: @page.errors, status: :unprocessable_entity
+        end
     end
 
     def update
-        @page.update(page_params)
-        respond_with(@page)
+        if @page.update(page_params)
+            render json: @page, status: :ok, location: @api_page
+        else
+            render json: @page.errors, status: :unprocessable_entity
+        end
     end
 
     def destroy
         @page.destroy
-        respond_with(@page)
+        render json: { message: "page successfully deleted"}, status: :ok
     end
 
     private

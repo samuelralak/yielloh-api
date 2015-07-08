@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708152457) do
+ActiveRecord::Schema.define(version: 20150708193517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20150708152457) do
   create_table "profiles", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "fullname",            limit: 255
     t.string   "username",            limit: 255
-    t.string   "about",               limit: 255
+    t.string   "tagline",             limit: 255
     t.string   "location",            limit: 255
     t.uuid     "user_id"
     t.datetime "created_at"
@@ -200,6 +200,26 @@ ActiveRecord::Schema.define(version: 20150708152457) do
   add_index "rs_reputations", ["reputation_name", "target_id", "target_type"], name: "index_rs_reputations_on_reputation_name_and_target", unique: true, using: :btree
   add_index "rs_reputations", ["reputation_name"], name: "index_rs_reputations_on_reputation_name", using: :btree
   add_index "rs_reputations", ["target_id", "target_type"], name: "index_rs_reputations_on_target_id_and_target_type", using: :btree
+
+  create_table "taggings", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.uuid     "tag_id"
+    t.uuid     "taggable_id"
+    t.string   "taggable_type"
+    t.uuid     "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+
+  create_table "tags", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string  "name"
+    t.integer "taggings_count", default: 0
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false

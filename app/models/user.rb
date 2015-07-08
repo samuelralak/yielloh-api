@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
     rolify
+    # acts_as_taggable # Alias for acts_as_taggable_on :tags
+    acts_as_taggable_on :interests
 
 	has_one :profile, dependent: :destroy
 	has_one :oauth_admin_login, inverse_of: :user, dependent: :destroy
