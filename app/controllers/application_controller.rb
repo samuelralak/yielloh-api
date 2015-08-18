@@ -47,15 +47,4 @@ class ApplicationController < ActionController::API
 		def record_not_found
 			render json: "{\"error\" : \"record_not_found\"}", status: :not_found
 		end
-
-		protected
-			def configure_permitted_parameters
-				devise_parameter_sanitizer.for(:sign_up) { |u| 
-					u.permit(
-						:email, :password, :password_confirmation, profile_attributes: [
-							:id, :gender_id, :date_of_birth
-						]
-					) 
-				}
-		end
 end

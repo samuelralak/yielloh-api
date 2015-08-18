@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     # acts_as_taggable # Alias for acts_as_taggable_on :tags
     acts_as_taggable_on :interests
 
-    has_one :profile, dependent: :destroy
+    has_one :profile, dependent: :destroy, autosave: true
     has_one :oauth_admin_login, inverse_of: :user, dependent: :destroy
 
     has_many :pages, inverse_of: :user
@@ -14,4 +14,5 @@ class User < ActiveRecord::Base
   		:recoverable, :rememberable, :trackable, :validatable
 
     accepts_nested_attributes_for :profile, allow_destroy: true
+
 end
