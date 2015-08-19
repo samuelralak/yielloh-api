@@ -19,6 +19,7 @@ Rails.application.routes.draw do
               resources :profiles, only: [:show, :create]
               resources :comments, only: [:create, :update, :destroy]
 
+              resources :genders,  except: [:new, :edit]
               resources :photos,   except: [:new, :edit]
               resources :pages,    except: [:new, :edit]
               resources :tags,     except: [:new, :edit]
