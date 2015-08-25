@@ -4,7 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
 			#devise_parameter_sanitizer.sanitize(:sign_up)
 			params.require(:user).permit(
 				:email, :password, :password_confirmation, profile_attributes: [
-					:id, :gender_id, :date_of_birth
+					:id, :gender, :date_of_birth, :username
 				]
 			)
     

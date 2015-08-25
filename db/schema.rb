@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818190827) do
+ActiveRecord::Schema.define(version: 20150825130652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 20150818190827) do
     t.string   "facebook_handle"
     t.datetime "date_of_birth"
     t.uuid     "gender_id"
+    t.string   "gender"
   end
 
   add_index "profiles", ["gender_id"], name: "index_profiles_on_gender_id", using: :btree
