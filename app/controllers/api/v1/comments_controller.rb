@@ -1,4 +1,5 @@
 class Api::V1::CommentsController < ApplicationController
+	before_action :doorkeeper_authorize!
 	before_action :set_comment, only: [:update, :destroy]
 
 	def create

@@ -1,5 +1,4 @@
 class Api::V1::GendersController < ApplicationController
-  before_action :doorkeeper_authorize!
   before_action :set_gender, only: [:show, :update, :destroy]
 
   # GET /genders
