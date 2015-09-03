@@ -3,7 +3,7 @@ require 'subdomain'
 
 Rails.application.routes.draw do
       use_doorkeeper
-      devise_for :users
+      devise_for :users, controllers: {registrations: 'registrations'}
 
       # API definition
       namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
               resources :profiles, only: [:show, :create]
               resources :comments, only: [:create, :update, :destroy]
 
+              resources :genders,  except: [:new, :edit]
               resources :photos,   except: [:new, :edit]
               resources :pages,    except: [:new, :edit]
               resources :tags,     except: [:new, :edit]
