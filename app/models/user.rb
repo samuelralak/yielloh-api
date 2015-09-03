@@ -14,5 +14,5 @@ class User < ActiveRecord::Base
   		:recoverable, :rememberable, :trackable, :validatable
 
     accepts_nested_attributes_for :profile, allow_destroy: true
-
+    validates :email, presence: true, uniqueness: { case_sensitive: false }
 end
