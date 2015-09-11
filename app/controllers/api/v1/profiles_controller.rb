@@ -1,6 +1,7 @@
 class Api::V1::ProfilesController < ApplicationController
   before_action      :doorkeeper_authorize!, except: [:show]
-  skip_before_action :require_profile,       only:   [:create, :show]
+  before_action      :process_cover_photo,   only:   [:update]
+  before_action      :process_avatar,        only:   [:update]
   before_action      :set_profile,           only:   [:show]
 
   def show
@@ -59,6 +60,25 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:fullname, :username, :tagline, :location, :user_id, :twitter_handle, :facebook_handle)
+      params.require(:profile).permit(:fullname, :username, :tagline, :location, :user_id, 
+        :twitter_handle, :facebook_handle, :gender, :avatar, :cover_photo)
+    end
+
+    def process_image(attribute)
+      if params[:profile] && params[:profile]["#{attribute.to_sym}"]
+        data = StringIO.new(Base64.decode64(params[:profile]["#{attribute.to_sym}"][:data]))
+        data.class.class_eval { attr_accessor :original_filename, :content_type }
+        data.original_filename = params[:profile]["#{attribute.to_sym}"][:filename]
+        data.content_type = params[:profile]["#{attribute.to_sym}"][:content_type]
+        params[:profile]["#{attribute.to_sym}"] = data
+      end
+    end
+
+    def process_avatar
+      process_image("avatar")
+    end
+
+    def process_cover_photo
+      process_image("cover_photo")
     end
 end

@@ -15,7 +15,7 @@ class Profile < ActiveRecord::Base
 
   protected
   	def assign_gender
-  		if self.gender.upcase.eql?('MALE') || self.gender.upcase.eql?('FEMALE')
+  		if self.gender && self.gender.upcase.eql?('MALE') || self.gender.upcase.eql?('FEMALE')
   			self.gender_id = Gender.find_by(code: self.gender.upcase).id
   		end
   	end
