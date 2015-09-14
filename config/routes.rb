@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
               put 'update_profile', to: 'profiles#update', as: 'update_profile'
 
-              get 'all_posts', to: 'posts#all', as: 'all_posts'
+              get 'me',        to: 'profiles#me', as: 'me'
+              get 'all_posts', to: 'posts#all',  as: 'all_posts'
 
               resources :profiles, only: [:show, :create]
               resources :comments, only: [:create, :update, :destroy]

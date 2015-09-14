@@ -4,10 +4,14 @@ class Api::V1::ProfilesController < ApplicationController
   before_action      :process_avatar,        only:   [:update]
   before_action      :set_profile,           only:   [:show]
 
+  def me
+    render json: current_user, root: false, status: :ok
+  end
+
   def show
-   respond_to do |format|
-      format.json { render json: @profile, root: false, status: :ok}
-    end
+    @profile = Profile.find(params[:id])
+
+    render json: @profile, root: false, status: :ok
   end
 
   def create
