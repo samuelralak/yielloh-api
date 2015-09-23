@@ -4,6 +4,12 @@ class Api::V1::ProfilesController < ApplicationController
   before_action      :process_avatar,        only:   [:update]
   before_action      :set_profile,           only:   [:show]
 
+  def index
+    @users = User.all
+
+    render json: @users
+  end
+
   def me
     render json: current_user, root: false, status: :ok
   end

@@ -17,7 +17,6 @@ Rails.application.routes.draw do
               get 'me',        to: 'profiles#me', as: 'me'
               get 'all_posts', to: 'posts#all',  as: 'all_posts'
 
-              resources :profiles, only: [:show, :create]
               resources :comments, only: [:create, :update, :destroy]
 
               resources :relationships, only: [:create, :destroy] do
@@ -25,6 +24,7 @@ Rails.application.routes.draw do
                   get :following, :followers
                 end
               end
+              resources :profiles,      except: [:new, :edit]
               resources :genders,       except: [:new, :edit]
               resources :photos,        except: [:new, :edit]
               resources :pages,         except: [:new, :edit]
