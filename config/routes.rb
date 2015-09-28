@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       devise_for :users, controllers: {registrations: 'registrations'}
 
       # API definition
-      namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
+      # namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
+      namespace :api, defaults: { format: :json }, path:  '/' do
           scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
               post 'user_sessions',    to: 'user_sessions#logout_user',    as: 'logout_user'
               post 'add_interests',    to: 'profiles#add_interests',       as: 'add_interests'
@@ -27,7 +28,6 @@ Rails.application.routes.draw do
               resources :profiles,      except: [:new, :edit]
               resources :genders,       except: [:new, :edit]
               resources :photos,        except: [:new, :edit]
-              resources :pages,         except: [:new, :edit]
               resources :tags,          except: [:new, :edit]
 
               resources :articles do
@@ -36,6 +36,12 @@ Rails.application.routes.draw do
 
               resources :quotes do
                   resources :posts
+              end
+
+              resources :pages, except: [:new, :edit] do
+                collection do
+                  get :my_pages
+                end
               end
           end
       end

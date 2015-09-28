@@ -55,6 +55,7 @@ GEM
       nokogiri (>= 1.4.4)
     bcrypt (3.1.10)
     builder (3.2.2)
+    cancancan (1.12.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.7)
@@ -164,6 +165,7 @@ DEPENDENCIES
   acts_as_commentable
   aws-s3
   aws-sdk (< 2.0)
+  cancancan (~> 1.10)
   delayed_paperclip
   devise
   doorkeeper

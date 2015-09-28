@@ -15,6 +15,7 @@ gem 'pg'
 gem 'devise'
 gem 'doorkeeper'
 gem 'rolify'
+gem 'cancancan', '~> 1.10'
 
 # uploads
 gem 'paperclip'
