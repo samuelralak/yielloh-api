@@ -9,5 +9,5 @@ class Post < ActiveRecord::Base
 
 	has_reputation :votes, source: :user, aggregated_by: :sum
 
-	attr_accessor :new_page
+	attr_accessor :tags
 end

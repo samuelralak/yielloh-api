@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   	self.responder = ApplicationResponder
   	respond_to :html, :xml, :json
 
-	# before_filter :verify_subdomain
+	before_filter :verify_subdomain
 	before_filter :require_profile
 	include ActionController::Serialization
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
@@ -33,8 +33,7 @@ class ApplicationController < ActionController::API
 
 	private
 		def verify_subdomain
-			unless Rails.env.eql?('development') && 
-				(request.subdomain.start_with?('api') || request.subdomain.start_with?('staging'))
+			unless request.subdomain.start_with?('api') || request.subdomain.start_with?('staging')
 				puts "######## SUBDOMAIN: #{request.subdomain}"
 				raise ActionController::RoutingError, "Route not found"
 			end

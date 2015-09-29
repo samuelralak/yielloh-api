@@ -6,4 +6,6 @@ class Article < ActiveRecord::Base
   	validates_attachment :media, :content_type => { :content_type => ["image/jpeg", "image/jpeg", "image/gif", "image/png"] }
 
   	validates :title, :content, presence: true
+
+  	attr_accessor :tags
 end

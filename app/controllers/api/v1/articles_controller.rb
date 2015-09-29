@@ -19,13 +19,18 @@ class Api::V1::ArticlesController < ApplicationController
 
 	def create
 		@article = Article.new(article_params)
+		logger.info "############ ARTICLE_PARAMS: #{article_params.inspect}"
+		
+		if @article.save
+			post = @article.post
+			tags = article_params[:tags].map(&:inspect).join(', ')
+      		logger.info "############ TAGS: #{tags}"
+      		post.tag_list = tags
+      		post.save!
 
-		respond_to do |format|
-			if @article.save
-				format.json { render json: @article, root: false, status: :created, location: @api_article }
-			else
-				format.json { render json: @article.errors, status: :unprocessable_entity }
-			end
+			render json: @article, status: :created
+		else
+			render json: @article.errors, status: :unprocessable_entity
 		end
 	end
 
@@ -53,7 +58,10 @@ class Api::V1::ArticlesController < ApplicationController
 		end
 
 		def article_params
-			params.require(:article).permit(:title, :media, :content, post_attributes: [:id, :postable_id, :postable_type, :user_id])
+			if params[:article][:tags]
+				params.require(:article).permit(:title, :media, :content, :tags, 
+					post_attributes: [:id, :postable_id, :postable_type, :user_id, :page_id, :tags]).merge(tags: params[:article][:tags])
+			end
 		end
 
 		def process_media
