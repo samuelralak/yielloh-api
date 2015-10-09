@@ -6,28 +6,22 @@ class Api::V1::PostsController < ApplicationController
 	def all
 		@posts = Post.all
 
-		respond_to do |format|
-			format.json { render json: @posts, root: false, status: :ok }
-		end
+		render json: @posts, status: :ok
 	end
 
 	def show
 		@post = @postable.post
 
-		respond_to do |format|
-			format.json { render json: @post, root: false, status: :ok }
-		end
+		render json: @post, root: false, status: :ok
 	end
 
 	def create
 		@post = @postable.posts.new(params[:post])
 
-		respond_to do |format|
-			if @post.save
-				format.json { render json: @post, root: false, status: :created }
-			else
+		if @post.save
+			render json: @post, status: :created
+		else
 				
-			end
 		end
 			
 	end
@@ -35,9 +29,7 @@ class Api::V1::PostsController < ApplicationController
 	def destroy
 		@postable.destroy
 
-		respond_to do |format|
-			format.json { head :no_content }
-		end
+		head :no_content
 	end
 
 	private

@@ -3,7 +3,7 @@ require 'subdomain'
 
 Rails.application.routes.draw do
       use_doorkeeper
-      devise_for :users, controllers: {registrations: 'registrations'}
+      devise_for :users, controllers: { registrations: 'registrations', passwords: 'passwords' }
 
       # API definition
       namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do

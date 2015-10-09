@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   	respond_to :html, :xml, :json
 
 	before_filter :verify_subdomain
-	before_filter :require_profile
+	# before_filter :require_profile
 	include ActionController::Serialization
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
 	include ActionController::ImplicitRender

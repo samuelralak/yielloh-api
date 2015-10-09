@@ -1,30 +1,24 @@
 class Api::V1::ArticlesController < ApplicationController
 	before_action :doorkeeper_authorize!, except: [:index, :show]
-	before_action :process_media, 		  only:   [:create, :updatearticle]
+	before_action :process_media, 		  only:   [:create, :update]
 	before_action :set_article, 		  only:   [:show, :update, :destroy]
 	
 	def index
 		@articles = Article.all
 
-		respond_to do |format|
-			format.json { render json: @articles, root: false, status: :ok, location: @api_articles }
-		end
+		render json: @articles, status: :ok
 	end
 
 	def show
-		respond_to do |format|
-			format.json { render json: @article, root: false, status: :ok, location: @api_article }
-		end
+		render json: @article, status: :ok
 	end
 
 	def create
 		@article = Article.new(article_params)
-		logger.info "############ ARTICLE_PARAMS: #{article_params.inspect}"
 		
 		if @article.save
 			post = @article.post
 			tags = article_params[:tags].map(&:inspect).join(', ')
-      		logger.info "############ TAGS: #{tags}"
       		post.tag_list = tags
       		post.save!
 
@@ -35,11 +29,10 @@ class Api::V1::ArticlesController < ApplicationController
 	end
 
 	def update
-		respond_to do |format|
 			if @article.update(article_params)
-				format.json { render json: @article, root: false, status: :ok, location: @api_article }
+				render json: @article, status: :ok
 			else
-				format.json { render json: @article.errors, status: :unprocessable_entity }
+				render json: @article.errors, status: :unprocessable_entity
 			end
 		end
 	end
@@ -47,9 +40,7 @@ class Api::V1::ArticlesController < ApplicationController
 	def destroy
 		@article.destroy
 
-		respond_to do |format|
-			format.json { head :no_content }
-		end
+		head :no_content
 	end
 
 	private
