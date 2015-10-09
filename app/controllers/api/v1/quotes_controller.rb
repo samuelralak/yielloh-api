@@ -6,45 +6,41 @@ class Api::V1::QuotesController < ApplicationController
 	def index
 		@quotes = Quote.all
 
-		respond_to do |format|
-			format.json { render json: @quotes, root: false, status: :ok, location: @api_quotes }
-		end
+		render json: @quotes, status: :ok
 	end
 
 	def show
-		respond_to do |format|
-			format.json { render json: @quote, root: false, status: :ok, location: @api_quote }
-		end
+		render json: @quote, status: :ok
 	end
 
 	def create
 		@quote = Quote.new(quote_params)
 
-		respond_to do |format|
-			if @quote.save
-				format.json { render json: @quote, root: false, status: :created, location: @api_quote }
-			else
-				format.json { render json: @quote.errors, status: :unprocessable_entity }
-			end
+		
+		if @quote.save
+			post = @quote.post
+			tags = quote_params[:tags].map(&:inspect).join(', ')
+      		post.tag_list = tags
+      		post.save!
+
+			render json: @quote, status: :created
+		else
+			render json: @quote.errors, status: :unprocessable_entity
 		end
 	end
 
 	def update
-		respond_to do |format|
-			if @quote.update(quote_params)
-				format.json { render json: @quote, root: false, status: :ok, location: @api_quote }
-			else
-				format.json { render json: @quote.errors, status: :unprocessable_entity }
-			end
+		if @quote.update(quote_params)
+			render json: @quote, status: :ok
+		else
+			render json: @quote.errors, status: :unprocessable_entity
 		end
 	end
 
 	def destroy
 		@quote.destroy
 
-		respond_to do |format|
-			format.json { head :no_content }
-		end
+		head :no_content
 	end
 
 	private
@@ -53,6 +49,11 @@ class Api::V1::QuotesController < ApplicationController
 		end
 
 		def quote_params
-			params.require(:quote).permit(:content, post_attributes: [:id, :postable_id, :postable_type, :user_id])
+			if params[:quote][:tags]
+				params.require(:quote).permit(:content, :tags, post_attributes: [
+					:id, :postable_id, :postable_type, :user_id, :page_id, :tags]).merge(tags: params[:quote][:tags])
+			else
+				params.require(:quote).permit(:content, post_attributes: [:id, :postable_id, :postable_type, :user_id])
+			end
 		end
 end

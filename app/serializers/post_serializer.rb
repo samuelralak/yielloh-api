@@ -1,5 +1,5 @@
 class PostSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :postable, :comments, :url, :tag_list
+  attributes :id, :user_id, :postable, :comments, :url, :tag_list, :page
 
   def url
   	if postable.class.name.eql?('Article')

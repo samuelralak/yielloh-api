@@ -3,4 +3,6 @@ class Quote < ActiveRecord::Base
 	accepts_nested_attributes_for :post, allow_destroy: true
 	
 	validates :content, presence: true
+
+	attr_accessor :tags
 end
