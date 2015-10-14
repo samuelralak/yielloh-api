@@ -49,9 +49,10 @@ class Api::V1::ProfilesController < ApplicationController
       new_interests = params[:interests].map(&:inspect).join(', ')
       logger.info "############ NEW INTERESTS: #{new_interests}"
       @user.interest_list = new_interests
+      @user.reload
 
       if @user.save
-          render json: current_user, status: :ok
+          render json: @user, status: :ok
       end
   end
 
