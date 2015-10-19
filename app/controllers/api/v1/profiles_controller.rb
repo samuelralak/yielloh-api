@@ -47,13 +47,11 @@ class Api::V1::ProfilesController < ApplicationController
   def add_interests
       @user = current_user
       new_interests = params[:interests].map(&:inspect).join(', ')
-      logger.info "############ NEW INTERESTS: #{new_interests}"
-      @user.interest_list = new_interests
+      logger.info "############ NEW INTERESTS: #{new_interests.inspect}"
+      @user.interest_list.add(new_interests, parse: true) 
+      @user.save
 
-      if @user.save
-        @user.reload
-        render json: @user, status: :ok
-      end
+      render json: @user, status: :ok
   end
 
   def remove_interests
