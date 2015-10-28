@@ -1,9 +1,9 @@
 ApiTaster.global_headers = {
-  'Authorization' => 'Bearer 86a60aa74e3966479527cddf75eafbc279593a2ccabe05ddbf9b31fb94bee754'
+  
 }
 
 ApiTaster.routes do
-    desc 'New user session'
+    desc 'USER SIGN IN'
 
     post '/oauth/token', {
         :format => :json,
@@ -14,25 +14,25 @@ ApiTaster.routes do
         :password => "passwordexample"
     }
 
-    post '/oauth/revoke', {
+    desc 'REFRESH TOKEN'
+
+    post '/oauth/token', {
         :format => :json,
-        :token => ""
+        :grant_type => "refresh_token",
+        :client_id => "e3fccc07f8a8df6e60db808dfa54fe0c6429f7a3a3e015c45f3f48c7d47e18fd",
+        :client_secret => "749c5eb50882ad23f45c0b0dae17af6a95e4db1563f16c91a5da6517fcfa44a4",
+        :refresh_token => "",
+        :password => "passwordexample"
     }
 
-    desc 'Destroy user session'
+    desc 'USER SIGN OUT'
 
-    delete '/users/sign_out', {
+    delete '/user_sessions', {
         :format => :json,
-        :access_token => ""
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f"
     }
 
-    desc 'Cancel user registration'
-
-    delete '/users', {
-
-    }
-
-    desc 'New user registration'
+    desc 'NEW USER REGISTRATION'
 
     post '/users', { 
         :format => :json,
@@ -43,48 +43,43 @@ ApiTaster.routes do
         }
     }
 
-    desc 'Edit user registration'
+    desc 'USER PROFILE'
 
-    put '/users', {
-
+    post '/profiles', {
+        :format => :json,
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :fullname => '',
+            :username => '',
+            :about => '',
+            :location => '',
+            :user_id => '4023de7b-cc16-4455-a40f-21814afeda47'
+        }
     }
 
-    desc 'Create user password'
-
-    post '/users/password', {
-
+    get '/profiles/:id', {
+        :format => :json,
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :id => ""
     }
 
-    desc 'Edit user password'
-
-    put '/users/password', {
-
+    patch '/profiles/:id', {
+        :format => :json,
+        :id => "",
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :fullname => '',
+        }
     }
 
+    put '/profiles/:id', {
+        :format => :json,
+        :id => "",
+        :access_token => "3560ec9cbb129196f3550ae6e612f439fd089d73464df4cd7d3aaa7dde34341f",
+        :profile => {
+            :username => '',
+        }
+    }
 
     
 end
-=begin
-  
-    get '/users'
-
-    post '/users', {
-      :user => {
-        :name => 'Fred'
-      }
-    }
-
-    get '/users/:id', {
-      :id => 1
-    }
-
-    put '/users/:id', {
-      :id => 1, :user => {
-        :name => 'Awesome'
-      }
-    }
-
-    delete '/users/:id', {
-      :id => 1
-    }
-=end

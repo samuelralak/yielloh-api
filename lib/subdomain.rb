@@ -1,11 +1,5 @@
 class Subdomain
-	def matches?(req)
-		if request.subdomain.start_with?('staging')
-			subdomain = 'staging'
-			subdomain
-		else
-			subdomain = 'api'
-			subdomain
-		end
-	end
+	def self.matches?(request)
+    	request.subdomain.present? && request.subdomain.start_with?('api') || request.subdomain.start_with?('api')
+  	end
 end

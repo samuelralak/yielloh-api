@@ -1,6 +1,75 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+    rolify
+    # acts_as_taggable # Alias for acts_as_taggable_on :tags
+    acts_as_taggable_on :interests
+
+    has_one :profile, dependent: :destroy, autosave: true
+    has_one :oauth_admin_login, inverse_of: :user, dependent: :destroy
+
+    has_many :pages, inverse_of: :user
+    has_many :comments, dependent: :destroy
+    has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
+    has_many :followers, through: :reverse_relationships, source: :follower
+    has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+    has_many :followed_users, through: :relationships, source: :followed
+  	
+    # Include default devise modules. Others available are:
+  	# :confirmable, :lockable, :timeoutable and :omniauthable
+  	devise :database_authenticatable, :registerable,
+  		:recoverable, :rememberable, :trackable, :validatable,:omniauthable#, :omniauth_providers => [:twitter]
+
+    def self.from_omniauth(auth)
+      where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+        user.provider = auth.provider
+        user.uid = auth.uid
+        user.email = auth.info.email
+        user.password = Devise.friendly_token[0,20]
+      end
+    end
+
+    ##new session from omniauth
+    def self.new_with_session(params,session)
+      if session["devise.user_attributes"]
+        new(session["devise.user_attributes"], without_protection: true ) do |user|
+          user.attributes = params
+          user.valid?
+        end
+      else
+        super
+      end
+    end
+    
+    
+    ##Skip password required for omniauth
+    #def self.password_required?
+    #  super && provide.blank?
+    #end
+
+
+    accepts_nested_attributes_for :profile, allow_destroy: true
+    validates :email, presence: true, uniqueness: { case_sensitive: false }
+
+    def following?(other_user)
+      relationships.find_by(followed_id: other_user.id)
+    end
+
+    def follow!(other_user)
+      relationships.create!(followed_id: other_user.id)
+    end
+
+    def unfollow!(other_user)
+      relationships.find_by(followed_id: other_user.id).destroy
+    end
+
+    def followers_count
+      self.followers.count
+    end
+
+    def followers_count
+      self.followers.count
+    end
+
+    def following_count
+      self.followed_users.count
+    end
 end
