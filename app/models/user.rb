@@ -44,4 +44,8 @@ class User < ActiveRecord::Base
     def following_count
       self.followed_users.count
     end
+
+    def pages_count
+      self.pages.count
+    end
 end
