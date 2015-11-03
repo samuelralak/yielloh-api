@@ -15,7 +15,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def show
-    @profile = Profile.find(params[:id])
+    @profile = User.find(params[:id])
 
     render json: @profile, root: false, status: :ok
   end
