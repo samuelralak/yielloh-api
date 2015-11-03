@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   	self.responder = ApplicationResponder
   	respond_to :html, :xml, :json
 
-	before_filter :verify_subdomain
+	# before_filter :verify_subdomain
 	# before_filter :require_profile
 	include ActionController::Serialization
 	include ActionController::HttpAuthentication::Basic::ControllerMethods

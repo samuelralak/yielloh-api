@@ -6,8 +6,8 @@ Rails.application.routes.draw do
       devise_for :users, controllers: { registrations: 'registrations', passwords: 'passwords' }
 
       # API definition
-      namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
-      # namespace :api, defaults: { format: :json }, path:  '/' do
+      # namespace :api, defaults: { format: :json }, constraints: { subdomain: /.+/ }, path:  '/' do
+      namespace :api, defaults: { format: :json }, path:  '/' do
           scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
               post 'user_sessions',    to: 'user_sessions#logout_user',    as: 'logout_user'
               post 'add_interests',    to: 'profiles#add_interests',       as: 'add_interests'
