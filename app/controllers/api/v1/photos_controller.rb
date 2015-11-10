@@ -1,37 +1,60 @@
 class Api::V1::PhotosController < ApplicationController
 	before_action :doorkeeper_authorize!, except: [:index, :show]
-	before_action :set_photo, only:   [:show, :update, :destroy]
-	skip_before_action :require_profile,  only:   [:index, :show]
+	before_action :process_media, 		  only:   [:create, :update]
+	before_action :set_photo, 		  only:   [:show, :update, :destroy]
+	
+	def index
+		@photos = Photo.all
+
+		render json: @photo, status: :ok
+	end
+
+	def show
+		render json: @photo, status: :ok
+	end
 
 	def create
-		photos = Array.new
-		errors = Array.new
-
-		params[:_json].each do |photo_attributes|
-			photo_params = ActionController::Parameters.new(photo_attributes)
-			permitted_photo_params = photo_params.require(:photo).permit(
-				:image, :caption, post_attributes: [:id, :postable_id, :postable_type, :user_id]
-			)
-
-			begin
-				photos << Photo.create!(permitted_photo_params)
-			rescue ActiveRecord::RecordInvalid => e
-				photos << e.record
-				errors << e.to_s
-			end
+		@photo = Photo.new(photo_params)
+		
+		if @photo.save
+			render json: @photo, status: :created
+		else
+			render json: @photo.errors, status: :unprocessable_entity
 		end
+	end
 
-		respond_to do |format|
-			if photos.all?(&:persisted?)
-				format.json { render json: photos, root: false, status: :created }
-			else
-				format.json { render json: { message: errors }, status: :unprocessable_entity }
-			end
+	def update
+		if @photo.update(photo_params)
+			render json: @photo, status: :ok
+		else
+			render json: @photo.errors, status: :unprocessable_entity
 		end
+	end
+
+	def destroy
+		@photo.destroy
+
+		head :no_content
 	end
 
 	private
 		def set_photo
 			@photo = photo.find(params[:id])
 		end
+
+		def photo_params
+			params.require(:photo).permit(
+				:image, :caption, post_attributes: [:id, :postable_id, :postable_type, :user_id]
+			)
+		end
+
+		def process_media
+            if params[:photo] && params[:photo][:image]
+                data = StringIO.new(Base64.decode64(params[:photo][:image][:data]))
+                data.class.class_eval { attr_accessor :original_filename, :content_type }
+                data.original_filename = params[:photo][:image][:filename]
+                data.content_type = params[:photo][:image][:content_type]
+                params[:photo][:image] = data
+            end
+        end
 end
