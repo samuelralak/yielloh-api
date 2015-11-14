@@ -36,7 +36,7 @@ class Api::V1::ProfilesController < ApplicationController
 
   def update
       @profile = current_user.profile
-
+      logger.info "############ PROFILE: #{@profile.inspect}"
       if @profile.update(profile_params)
           render json: @profile, root: false, status: :ok, location: @api_profile
       else
