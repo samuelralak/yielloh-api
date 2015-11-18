@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
 	acts_as_taggable # Alias for acts_as_taggable_on :tags
 	
+	belongs_to :user, inverse_of: :posts
 	belongs_to :page, inverse_of: :posts
 	belongs_to :postable, polymorphic: true
 

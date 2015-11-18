@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
     has_one :profile, dependent: :destroy, autosave: true
     has_one :oauth_admin_login, inverse_of: :user, dependent: :destroy
 
+    has_many :posts, inverse_of: :user
     has_many :pages, inverse_of: :user
     has_many :comments, dependent: :destroy
     has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
