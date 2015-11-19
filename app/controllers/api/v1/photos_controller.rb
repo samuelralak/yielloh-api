@@ -37,6 +37,12 @@ class Api::V1::PhotosController < ApplicationController
 		head :no_content
 	end
 
+	def my_articles
+		@photos = current_user.posts.where(postable_type: 'Photo')
+
+		render json: @photos, status: :ok
+	end
+
 	private
 		def set_photo
 			@photo = photo.find(params[:id])

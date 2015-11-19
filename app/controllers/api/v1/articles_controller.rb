@@ -36,6 +36,12 @@ class Api::V1::ArticlesController < ApplicationController
 		end
 	end
 
+	def my_articles
+		@articles = current_user.posts.where(postable_type: 'Article')
+
+		render json: @articles, status: :ok
+	end
+
 	def destroy
 		@article.destroy
 

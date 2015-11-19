@@ -1,6 +1,7 @@
 class Api::V1::QuotesController < ApplicationController
 	before_action :doorkeeper_authorize!, except: [:index, :show]
 	skip_before_action :require_profile,  only:   [:index, :show]
+	before_action :process_media, 		  only:   [:create, :update]
 	before_action :set_quote, 			  only:   [:show, :update, :destroy]
 	
 	def index
@@ -43,6 +44,12 @@ class Api::V1::QuotesController < ApplicationController
 		head :no_content
 	end
 
+	def my_quotes
+		@quotes = current_user.posts.where(postable_type: 'Quote')
+
+		render json: @quotes, status: :ok
+	end
+
 	private
 		def set_quote
 			@quote = Quote.find(params[:id])
@@ -56,4 +63,14 @@ class Api::V1::QuotesController < ApplicationController
 				params.require(:quote).permit(:content, post_attributes: [:id, :postable_id, :postable_type, :user_id])
 			end
 		end
+
+		def process_media
+            if params[:quote] && params[:quote][:image]
+                data = StringIO.new(Base64.decode64(params[:quote][:image][:data]))
+                data.class.class_eval { attr_accessor :original_filename, :content_type }
+                data.original_filename = params[:quote][:image][:filename]
+                data.content_type = params[:quote][:image][:content_type]
+                params[:quote][:image] = data
+            end
+        end
 end

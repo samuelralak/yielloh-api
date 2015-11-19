@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150914211452) do
+ActiveRecord::Schema.define(version: 20151119101602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20150914211452) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.uuid     "page_id"
+    t.boolean  "is_anonymous",  default: false
   end
 
   add_index "posts", ["page_id"], name: "index_posts_on_page_id", using: :btree
@@ -158,6 +159,10 @@ ActiveRecord::Schema.define(version: 20150914211452) do
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "relationships", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
@@ -255,6 +260,8 @@ ActiveRecord::Schema.define(version: 20150914211452) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "uid"
+    t.string   "provider"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

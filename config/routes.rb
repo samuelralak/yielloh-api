@@ -27,15 +27,27 @@ Rails.application.routes.draw do
               end
               resources :profiles,      except: [:new, :edit]
               resources :genders,       except: [:new, :edit]
-              resources :photos,        except: [:new, :edit]
+              # resources :photos,        except: [:new, :edit]
               resources :tags,          except: [:new, :edit]
+
+              resources :photos do
+                  collection do
+                    get :my_photos
+                  end
+              end
 
               resources :articles do
                   resources :posts
+                  collection do
+                    get :my_articles
+                  end
               end
 
               resources :quotes do
                   resources :posts
+                  collection do
+                    get :my_quotes
+                  end
               end
 
               resources :pages, except: [:new, :edit] do
