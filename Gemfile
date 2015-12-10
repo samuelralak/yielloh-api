@@ -42,6 +42,9 @@ gem 'acts-as-taggable-on', '~> 3.4'
 
 gem "letter_opener", :group => :development
 
+#server
+gem 'puma'
+
 group :production do
   gem 'rails_12factor'
 end

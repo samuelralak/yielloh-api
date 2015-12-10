@@ -98,6 +98,7 @@ GEM
       mime-types
       mimemagic (= 0.3.0)
     pg (0.18.2)
+    puma (2.14.0)
     rack (1.6.4)
     rack-attack (4.3.0)
       rack
@@ -172,6 +173,7 @@ DEPENDENCIES
   letter_opener
   paperclip
   pg
+  puma
   rack-attack
   rack-cors
   rails (= 4.2.0)
