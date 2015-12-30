@@ -21,4 +21,8 @@ class Api::V1::TagsController < ApplicationController
     def destroy
 
     end
+
+    def list
+        
+    end
 end

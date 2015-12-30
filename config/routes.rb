@@ -15,10 +15,11 @@ Rails.application.routes.draw do
 
               put 'update_profile', to: 'profiles#update', as: 'update_profile'
 
-              get 'me',        to: 'profiles#me', as: 'me'
-              get 'all_posts', to: 'posts#all',  as: 'all_posts'
+              get 'me',         to: 'profiles#me',    as: 'me'
+              get 'all_posts',  to: 'posts#all',      as: 'all_posts'
+              get 'user_posts', to: 'profiles#posts',  as: 'user_posts'
 
-              resources :comments, only: [:create, :update, :destroy]
+              resources :comments, only: [:index, :create, :update, :destroy]
 
               resources :relationships, only: [:create, :destroy] do
                 member do
@@ -28,7 +29,11 @@ Rails.application.routes.draw do
               resources :profiles,      except: [:new, :edit]
               resources :genders,       except: [:new, :edit]
               # resources :photos,        except: [:new, :edit]
-              resources :tags,          except: [:new, :edit]
+              resources :tags, except: [:new, :edit] do
+                collection do
+                  get :list
+                end
+              end
 
               resources :photos do
                   collection do

@@ -19,10 +19,12 @@ class Api::V1::QuotesController < ApplicationController
 
 		
 		if @quote.save
-			post = @quote.post
-			tags = quote_params[:tags].map(&:inspect).join(', ')
-      		post.tag_list = tags
-      		post.save!
+			if quote_params[:tags]
+				post = @quote.post
+				tags = quote_params[:tags].map(&:inspect).join(', ')
+	      		post.tag_list = tags
+	      		post.save!	
+			end
 
 			render json: @quote, status: :created
 		else
@@ -57,10 +59,10 @@ class Api::V1::QuotesController < ApplicationController
 
 		def quote_params
 			if params[:quote][:tags]
-				params.require(:quote).permit(:content, :tags, post_attributes: [
+				params.require(:quote).permit(:content, :tags, :author, post_attributes: [
 					:id, :postable_id, :postable_type, :user_id, :page_id, :tags]).merge(tags: params[:quote][:tags])
 			else
-				params.require(:quote).permit(:content, post_attributes: [:id, :postable_id, :postable_type, :user_id])
+				params.require(:quote).permit(:content, :author, post_attributes: [:id, :postable_id, :postable_type, :user_id, :page_id])
 			end
 		end
 

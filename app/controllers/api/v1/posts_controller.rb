@@ -4,7 +4,11 @@ class Api::V1::PostsController < ApplicationController
 	before_action      :load_postable, 		   except: [:all]
 
 	def all
-		@posts = Post.all
+		if params[:tag]
+			@posts = Post.tagged_with(params[:tag]).order('created_at DESC')
+		else
+			@posts = Post.all.order('created_at DESC')
+		end
 
 		render json: @posts, status: :ok
 	end

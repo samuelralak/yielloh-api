@@ -14,6 +14,13 @@ class Api::V1::ProfilesController < ApplicationController
     render json: current_user, root: false, status: :ok
   end
 
+  def posts
+    @profile = Profile.find_by(username: params[:username])
+    @posts = Post.where(user_id: @profile.user_id)
+    
+    render json: @posts, status: :ok
+  end
+
   def show
     @profile = User.find(params[:id])
 

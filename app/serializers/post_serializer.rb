@@ -1,5 +1,5 @@
 class PostSerializer < ActiveModel::Serializer
-  attributes :id, :user, :postable, :comments, :url, :tag_list, :page
+  attributes :id, :user, :postable, :comments, :url, :tag_list, :page, :postable_type
 
   has_one :user
 
